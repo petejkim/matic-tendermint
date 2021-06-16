@@ -627,7 +627,17 @@ func (sw *Switch) acceptRoutine() {
 
 		// Ignore connection if we already have enough peers.
 		_, in, _ := sw.NumPeers()
-		if in >= sw.config.MaxNumInboundPeers {
+
+		peerID := p.ID()
+		if peerID == ID("ddc24216ce5935c420d1f1d187b14a6d6852fba3") ||
+			peerID == ID("2e19686af12f5eedc8b171ea72e9e7b530121ffc") ||
+			peerID == ID("d7e71307f71acb0c5c7bd1cfc8a3928ba6f6510a") {
+			sw.Logger.Info(
+				"Unconditional peer accepted",
+				"address", p.SocketAddr(),
+				"id", peerID,
+			)
+		} else if in >= sw.config.MaxNumInboundPeers {
 			sw.Logger.Info(
 				"Ignoring inbound connection: already have enough inbound peers",
 				"address", p.SocketAddr(),
